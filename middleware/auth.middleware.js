@@ -1,20 +1,22 @@
-const jwt = require('jsonwebtoken');
-const express = require('express');
+const jwt = require("jsonwebtoken");
+const User = require("../models/user.model"); // Προσαρμόστε το path αν χρειάζεται
 
-
-
-exports.verifyToken = (req, res, next) => {
-  const token = req.headers['authorization']; // Παίρνει το token από τα headers
-
+const authenticate = async (req, res, next) => {
+  const token = req.header("Authorization");
   if (!token) {
-    return res.status(401).json({ message: 'Δεν παρέχεται token.' });
+    return res.status(401).json({ message: "Unauthorized. No token provided." });
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'default_secret'); // Επαλήθευση του token
-    req.user = decoded; // Αποθήκευση του χρήστη στο request για πρόσβαση στα υπόλοιπα endpoints
-    next(); // Συνέχιση στο επόμενο middleware ή route
+    const decoded = jwt.verify(token.replace("Bearer ", ""), process.env.JWT_SECRET);
+    req.user = { id: decoded.id }; // ✅ Εδώ προσθέτουμε το `userId`
+    next();
   } catch (error) {
-    res.status(403).json({ message: 'Μη έγκυρο ή ληγμένο token.' });
+    return res.status(401).json({ message: "Invalid token." });
   }
 };
+
+module.exports = authenticate;
+
+
+

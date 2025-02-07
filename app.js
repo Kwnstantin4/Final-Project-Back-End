@@ -30,7 +30,7 @@ const orderRoutes = require('./routes/orders.route');
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
-app.use('/api/orders', verifyToken); // Όλα τα routes στο /api/orders απαιτούν έλεγχο αυθεντικοποίησης
+//app.use('/api/orders', verifyToken); // Όλα τα routes στο /api/orders απαιτούν έλεγχο αυθεντικοποίησης
 
 // MongoDB Connection
 mongoose

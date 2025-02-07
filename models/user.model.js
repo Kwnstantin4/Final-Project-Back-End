@@ -45,8 +45,9 @@ let userSchema = new Schema({
       lowercase: true,
       match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Email address is not valid']
     },
-    address: addressSchema,
-    phone: { type: [phoneSchema], null: true },
+    address: { type: addressSchema, required: true },
+    phone: { type: [phoneSchema], required: true, default: [] },
+
     products: { type: [productSchema], null: true}
   }, {
     collection: 'users',
@@ -55,4 +56,5 @@ let userSchema = new Schema({
 
   userSchema.plugin(uniqueValidator);
   module.exports = mongoose.model('User', userSchema)
+  
   
